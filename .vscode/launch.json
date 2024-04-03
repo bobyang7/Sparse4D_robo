@@ -1,0 +1,125 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "train_debug",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/bo.yang5/other/Sparse4D-full2/tools/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": ["projects/configs/sparse4dv3_temporal_r50_1x8_bs6_256x704.py", "--gpu-ids", "0"]
+        },
+        {
+            "name": "test_debug",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/bo.yang5/other/Sparse4D-full2/tools/test.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["projects/configs/sparse4dv3_temporal_r50_1x8_bs6_256x704.py", "/home/bo.yang5/other/Sparse4D-full/work_dirs/sparse4dv3_temporal_r50_1x8_bs6_256x704/iter_43900.pth", "--eval", "bbox",]
+        },
+        {
+            "name": "test_debug_robo",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/bo.yang5/other/Sparse4D-full2/tools/test_corruption.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": ["projects/configs/sparse4dv3_temporal_r50_1x8_bs6_256x704_robo.py", "/home/bo.yang5/other/Sparse4D-full/ckpt/sparse4dv3_r50.pth", "--eval", "bbox"]
+        },
+        {
+            "name": "torchrun_robo",
+            "type": "python",
+            "request": "launch",
+            // 设置 program 的路径为 torchrun 脚本对应的绝对路径
+            // 可使用 pip show torch 查看 torch 的安装路径
+            "program": "/home/bo.yang5/other/Sparse4D-full/.venv/lib/python3.8/site-packages/torch/distributed/run.py",
+            // 设置 torchrun 命令的参数
+            "args":[
+                "--nproc_per_node=1",
+                "--master_port=29501",
+                "/home/bo.yang5/other/Sparse4D-full2/tools/test_corruption.py",
+                "projects/configs/sparse4dv3_temporal_r50_1x8_bs6_256x704_robo.py",
+                "/home/bo.yang5/other/Sparse4D-full/work_dirs/sparse4dv3_temporal_r50_1x8_bs6_256x704/iter_43900.pth",
+                "--launcher=pytorch",
+                "--show_only",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "torchrun",
+            "type": "python",
+            "request": "launch",
+            // 设置 program 的路径为 torchrun 脚本对应的绝对路径
+            // 可使用 pip show torch 查看 torch 的安装路径
+            "program": "/home/bo.yang5/other/Sparse4D-full/.venv/lib/python3.8/site-packages/torch/distributed/run.py",
+            // 设置 torchrun 命令的参数
+            "args":[
+                "--nproc_per_node=8",
+                "--master_port=29501"
+                "/home/bo.yang5/other/Sparse4D-full/tools/train.py",
+                "projects/configs/sparse4dv3_temporal_r50_1x8_bs6_256x704.py",
+                "--launcher=pytorch"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": []
+        },
+        {
+            "name": "train_debug_multi_node",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/python",
+            "justMyCode": true,
+            "console": "integratedTerminal",
+            "args": [
+                "-m", "torch.distributed.launch",
+                "--nproc_per_node=8",
+                "--use_env",
+                "${workspaceFolder}/tools/train.py",
+                "${workspaceFolder}/projects/configs/sparse4dv2_r50_HInf_256x704_dist.py",
+            ],
+            "env": {
+                "MASTER_ADDR": "172.22.34.253",
+                "MASTER_PORT": "28650"
+            }
+        },
+        {
+            "name": "Distributed Training",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/python",
+            "args": [
+                "-m", "torch.distributed.launch",
+                "--nnodes=2",
+                "--nproc_per_node=8",
+                "--master_addr=172.21.129.198",
+                "--master_port=28652",
+                "train.py",
+                "projects/configs/sparse4dv2_r50_HInf_256x704_debug.py",
+                "--launcher", "pytorch"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${env:PYTHONPATH}",
+                "CUDA_LAUNCH_BLOCKING": "1"
+            },
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        }
+    ]
+}

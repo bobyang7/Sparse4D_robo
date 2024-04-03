@@ -1,0 +1,13 @@
+*.pyc
+*.npy
+*.pth
+visual*
+*.pkl
+pred*
+
+results*
+work_dirs/
+data
+ckpt
+a.py
+metrics*
