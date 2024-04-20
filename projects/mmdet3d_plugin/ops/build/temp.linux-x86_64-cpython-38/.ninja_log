@@ -1,3 +1,5 @@
 # ninja log v5
 0	27943	1706081375930871667	/home/bo.yang5/other/Sparse4D-full/projects/mmdet3d_plugin/ops/build/temp.linux-x86_64-cpython-38/src/deformable_aggregation.o	445c27dcc7926175
 1	85224	1706081433226346562	/home/bo.yang5/other/Sparse4D-full/projects/mmdet3d_plugin/ops/build/temp.linux-x86_64-cpython-38/src/deformable_aggregation_cuda.o	6186f88f8182de4f
+1	20799	1713584613351777579	/home/bo.yang5/other/robo/Sparse4D_robo/projects/mmdet3d_plugin/ops/build/temp.linux-x86_64-cpython-38/src/deformable_aggregation.o	2b641d1c4f0d021b
+1	34675	1713584627234475270	/home/bo.yang5/other/robo/Sparse4D_robo/projects/mmdet3d_plugin/ops/build/temp.linux-x86_64-cpython-38/src/deformable_aggregation_cuda.o	8c644f672110d7b2
