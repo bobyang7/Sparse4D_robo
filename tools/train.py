@@ -145,7 +145,7 @@ def main():
                 print(_module_path)
                 import sys
 
-                sys.path.append("/home/bo.yang5/other/Sparse4D-full2")
+                sys.path.append("/home/bo.yang5/other/robo/Sparse4D_robo")
                 plg_lib = importlib.import_module(_module_path)
             else:
                 # import dir is the dirpath for the config file

@@ -8,7 +8,7 @@
             "name": "train_debug",
             "type": "python",
             "request": "launch",
-            "program": "/home/bo.yang5/other/Sparse4D-full2/tools/train.py",
+            "program": "${workspaceFolder}/tools/train.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": ["projects/configs/sparse4dv3_temporal_r50_1x8_bs6_256x704.py", "--gpu-ids", "0"]
@@ -17,7 +17,7 @@
             "name": "test_debug",
             "type": "python",
             "request": "launch",
-            "program": "/home/bo.yang5/other/Sparse4D-full2/tools/test.py",
+            "program": "${workspaceFolder}/tools/test.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": ["projects/configs/sparse4dv3_temporal_r50_1x8_bs6_256x704.py", "/home/bo.yang5/other/Sparse4D-full/work_dirs/sparse4dv3_temporal_r50_1x8_bs6_256x704/iter_43900.pth", "--eval", "bbox",]
@@ -26,7 +26,7 @@
             "name": "test_debug_robo",
             "type": "python",
             "request": "launch",
-            "program": "/home/bo.yang5/other/Sparse4D-full2/tools/test_corruption.py",
+            "program": "${workspaceFolder}/tools/test_corruption.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": ["projects/configs/sparse4dv3_temporal_r50_1x8_bs6_256x704_robo.py", "/home/bo.yang5/other/Sparse4D-full/ckpt/sparse4dv3_r50.pth", "--eval", "bbox"]

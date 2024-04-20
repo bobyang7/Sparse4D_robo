@@ -50,12 +50,19 @@ class SparseBox3DLoss(nn.Module):
                 )
                 < 0
             )
-            if_reverse = (
-                torch.isin(
-                    cls_target, cls_target.new_tensor(self.cls_allow_reverse)
-                )
-                & if_reverse
-            )
+            # if_reverse = (
+            #     torch.isin(
+            #         cls_target, cls_target.new_tensor(self.cls_allow_reverse)
+            #     )
+            #     & if_reverse
+            # )
+            is_in_allow_reverse = cls_target.unsqueeze(1) == cls_target.new_tensor(
+                self.cls_allow_reverse
+            ).unsqueeze(0)
+            is_in_allow_reverse = torch.any(is_in_allow_reverse, dim=1)
+
+            # 将两个条件合并，并进行逻辑与操作
+            if_reverse = is_in_allow_reverse & if_reverse
             box_target[..., [SIN_YAW, COS_YAW]] = torch.where(
                 if_reverse[..., None],
                 -box_target[..., [SIN_YAW, COS_YAW]],
@@ -63,9 +70,7 @@ class SparseBox3DLoss(nn.Module):
             )
 
         output = {}
-        box_loss = self.loss_box(
-            box, box_target, weight=weight, avg_factor=avg_factor
-        )
+        box_loss = self.loss_box(box, box_target, weight=weight, avg_factor=avg_factor)
         output[f"loss_box{suffix}"] = box_loss
 
         if quality is not None:
@@ -74,8 +79,12 @@ class SparseBox3DLoss(nn.Module):
             cns_target = torch.norm(
                 box_target[..., [X, Y, Z]] - box[..., [X, Y, Z]], p=2, dim=-1
             )
-            cns_target = torch.exp(-cns_target) #位置越准确，负的指数越接近1，否则越接近0
-            cns_loss = self.loss_cns(cns, cns_target, avg_factor=avg_factor) #交叉熵损失
+            cns_target = torch.exp(
+                -cns_target
+            )  # 位置越准确，负的指数越接近1，否则越接近0
+            cns_loss = self.loss_cns(
+                cns, cns_target, avg_factor=avg_factor
+            )  # 交叉熵损失
             output[f"loss_cns{suffix}"] = cns_loss
 
             yns_target = (
@@ -85,9 +94,11 @@ class SparseBox3DLoss(nn.Module):
                     dim=-1,
                 )
                 > 0
-            ) #朝向越准确，cos相似度越接近1，即朝向相似的为true，相反的为false
+            )  # 朝向越准确，cos相似度越接近1，即朝向相似的为true，相反的为false
             yns_target = yns_target.float()
-            #Gaussian_focal_loss 引入了软标签，但是这里的label即yns_target的值仍为硬标签，故等效于focal_loss
-            yns_loss = self.loss_yns(yns, yns_target, avg_factor=avg_factor) #Gaussian_focal_loss
+            # Gaussian_focal_loss 引入了软标签，但是这里的label即yns_target的值仍为硬标签，故等效于focal_loss
+            yns_loss = self.loss_yns(
+                yns, yns_target, avg_factor=avg_factor
+            )  # Gaussian_focal_loss
             output[f"loss_yns{suffix}"] = yns_loss
         return output

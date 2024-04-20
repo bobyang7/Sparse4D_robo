@@ -112,7 +112,7 @@ drop_out = 0.1
 temporal = True
 decouple_attn = True
 with_quality_estimation = True
-kalman_filter = True
+kalman_filter = False
 find_unused_parameters = False
 
 model = dict(

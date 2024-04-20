@@ -20,6 +20,17 @@ pip3 install -r requirement.txt
 
 # 手动下载mmdet3d-0.17.1, 到mmdetection3d的官网https://github.com/open-mmlab/mmdetection3d/tree/v0.17.1?tab=readme-ov-file
 pip install -v -e .
+# 手动下载安装mmdet3d后, 请将拉取的mmdet3d的文件夹替换这个手动安装的mmdet3d文件夹, 更改文件名即可(因为为了适配robo比赛的一些文件，对sparse4d的文件做了改动,所以这里略显麻烦)
+```
+
+### 安装detectron
+```bash
+git clone https://github.com/facebookresearch/detectron2.git
+
+cd detectron2
+python setup.py install
+
+pip install setuptools==59.5.0
 ```
 
 

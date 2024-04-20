@@ -104,13 +104,13 @@ def custom_train_detector(
     else:
         model = MMDataParallel(model.cuda(cfg.gpu_ids[0]), device_ids=cfg.gpu_ids)
 
-    for name, param in model.named_parameters():
-        if "k_encoder" not in name:
-            param.requires_grad = False
+    # for name, param in model.named_parameters():
+    #     if "k_encoder" not in name:
+    #         param.requires_grad = False
 
     # build runner
-    # optimizer = build_optimizer(model, cfg.optimizer)
-    optimizer = build_optimizer(model.module.head.layers[39], cfg.optimizer)
+    optimizer = build_optimizer(model, cfg.optimizer)
+    # optimizer = build_optimizer(model.module.head.layers[39], cfg.optimizer)
 
     if "runner" not in cfg:
         cfg.runner = {

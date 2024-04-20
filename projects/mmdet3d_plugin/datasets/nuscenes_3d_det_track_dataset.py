@@ -127,7 +127,8 @@ class NuScenes3DDetTrackDataset(Dataset):
                 corruption in self.CORRUPTION
             ), f"Corruption {corruption} not in {self.CORRUPTION}"
         self.corruption = corruption
-        self.sample_scenes_dict = self.load_sample_scenes()
+        if corruption is not None:
+            self.sample_scenes_dict = self.load_sample_scenes()
 
         super().__init__()
         self.data_root = data_root
